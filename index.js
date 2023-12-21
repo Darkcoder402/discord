@@ -1,5 +1,6 @@
 // index.js
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const uuid = require('uuid');
 const express = require('express');
 const app = express();
 app.set('view engine', 'ejs');
@@ -29,13 +30,13 @@ app.post('/getToken', (req, res) => {
       'sec-fetch-site': 'cross-site',
       'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0'
     },
-    body: JSON.stringify({ partnerUserId: 'd19e4fe112b031f5905da447' })
+    body: JSON.stringify({ partnerUserId: uuid.v4() })
   };
 
   fetch(url, options)
     .then(response => response.json())
     .then(data => {
-      const initialLink = 'https://discord.com/billing/partner-promotions/1180231712274387115';
+      const initialLink = 'https://discord.com/billing/partner-promotions/1180231712274387115/';
       const token = data.token;
       const link = initialLink + token;
       res.render('main', { link: link });
